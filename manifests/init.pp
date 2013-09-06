@@ -386,6 +386,7 @@ class pnp4nagios (
 
   ### Service monitoring, if enabled ( monitor => true )
   ###  -- Removed Port Monitoring, npcd does not open a listen port
+  if $pnp4nagios::bool_monitor == true {
     if $pnp4nagios::service != '' {
       monitor::process { 'pnp4nagios_process':
         process  => $pnp4nagios::process,
