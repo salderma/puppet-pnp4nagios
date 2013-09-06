@@ -233,6 +233,8 @@ class pnp4nagios (
   $pid_file            = params_lookup( 'pid_file' ),
   $data_dir            = params_lookup( 'data_dir' ),
   $log_dir             = params_lookup( 'log_dir' ),
+  $ssi_file            = params_lookup( 'ssi_file' ),
+  $ssi_dir             = params_lookup( 'ssi_dir' )
   ) inherits pnp4nagios::params {
 
   $bool_source_dir_purge=any2bool($source_dir_purge)
@@ -341,6 +343,20 @@ class pnp4nagios (
     group   => $pnp4nagios::config_file_group,
     require => Package[$pnp4nagios::package],
     notify  => $pnp4nagios::manage_service_autorestart,
+    source  => $pnp4nagios::manage_file_source,
+    content => $pnp4nagios::manage_file_content,
+    replace => $pnp4nagios::manage_file_replace,
+    audit   => $pnp4nagios::manage_audit,
+    noop    => $pnp4nagios::bool_noops,
+  }
+
+  file { 'status-header.ssi':
+    ensure  => $pnp4nagios::manage_file,
+    path    => $pnp4nagios::ssi_file,
+    mode    => $pnp4nagios::config_file_mode,
+    owner   => $pnp4nagios::config_file_owner,
+    group   => $pnp4nagios::config_file_group,
+    require => Package[$pnp4nagios::package],
     source  => $pnp4nagios::manage_file_source,
     content => $pnp4nagios::manage_file_content,
     replace => $pnp4nagios::manage_file_replace,

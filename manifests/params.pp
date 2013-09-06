@@ -72,6 +72,14 @@ class pnp4nagios::params {
     default => '/var/log/pnp4nagios',
   }
 
+  $ssi_file = $::operatingsystem ? {
+    default => '/usr/share/nagios/html/ssi/status-header.ssi',
+  }
+
+  $ssi_dir = $::operatingystem ? {
+    default => '/usr/share/nagios/html/ssi',
+  }
+
   # General Settings
   $my_class = ''
   $source = ''
