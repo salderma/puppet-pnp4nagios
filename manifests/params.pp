@@ -80,6 +80,7 @@ class pnp4nagios::params {
     default => '/usr/share/nagios/html/ssi',
   }
 
+
   # General Settings
   $my_class = ''
   $source = ''
@@ -92,6 +93,7 @@ class pnp4nagios::params {
   $absent = false
   $disable = false
   $disableboot = false
+  $ssi_template = 'pnp4nagios/status-header.ssi.erb'
 
   ### General module variables that can have a site or per module default
   $monitor = false

@@ -191,6 +191,8 @@
 # [*ssi_file*]
 #   Nagios integration file for mouseover graphs
 #
+# [*ssi_template*]
+#   Template file for ssi_file content
 #
 # See README for usage patterns.
 #
@@ -229,7 +231,8 @@ class pnp4nagios (
   $data_dir            = params_lookup( 'data_dir' ),
   $log_dir             = params_lookup( 'log_dir' ),
   $ssi_file            = params_lookup( 'ssi_file' ),
-  $ssi_dir             = params_lookup( 'ssi_dir' )
+  $ssi_dir             = params_lookup( 'ssi_dir' ),
+  $ssi_template        = params_lookup( 'ssi_template' )
   ) inherits pnp4nagios::params {
 
   $bool_source_dir_purge=any2bool($source_dir_purge)
@@ -314,6 +317,11 @@ class pnp4nagios (
     default   => template($pnp4nagios::template),
   }
 
+  $manage_ssi_file_content = $pnp4nagios::ssi_template ? {
+    ''        => undef,
+    default   => template($pnp4nagios::ssi_template),
+  }
+
   ### Managed resources
   package { $pnp4nagios::package:
     ensure  => $pnp4nagios::manage_package,
@@ -352,7 +360,7 @@ class pnp4nagios (
     owner   => $pnp4nagios::config_file_owner,
     group   => $pnp4nagios::config_file_group,
     require => Package[$pnp4nagios::package],
-    source  => "$pnp4nagios::ssi_file",
+    content => $pnp4nagios::manage_ssi_file_content,
     audit   => $pnp4nagios::manage_audit,
     noop    => $pnp4nagios::bool_noops,
   }
