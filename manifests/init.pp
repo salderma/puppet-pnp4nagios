@@ -185,16 +185,11 @@
 # [*log_file*]
 #   Log file(s). Used by puppi
 #
-# [*port*]
-#   The listening port, if any, of the service.
-#   This is used by monitor, firewall and puppi (optional) components
-#   Note: This doesn't necessarily affect the service configuration file
-#   Can be defined also by the (top scope) variable $pnp4nagios_port
+# [*ssi_dir*]
+#   Nagios HTML/ssi directory
 #
-# [*protocol*]
-#   The protocol used by the the service.
-#   This is used by monitor, firewall and puppi (optional) components
-#   Can be defined also by the (top scope) variable $pnp4nagios_protocol
+# [*ssi_file*]
+#   Nagios integration file for mouseover graphs
 #
 #
 # See README for usage patterns.
@@ -357,9 +352,6 @@ class pnp4nagios (
     owner   => $pnp4nagios::config_file_owner,
     group   => $pnp4nagios::config_file_group,
     require => Package[$pnp4nagios::package],
-    source  => $pnp4nagios::manage_file_source,
-    content => $pnp4nagios::manage_file_content,
-    replace => $pnp4nagios::manage_file_replace,
     audit   => $pnp4nagios::manage_audit,
     noop    => $pnp4nagios::bool_noops,
   }
