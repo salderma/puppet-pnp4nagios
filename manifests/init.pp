@@ -352,7 +352,7 @@ class pnp4nagios (
     owner   => $pnp4nagios::config_file_owner,
     group   => $pnp4nagios::config_file_group,
     require => Package[$pnp4nagios::package],
-    source  => $pnp4nagios::ssi_file,
+    source  => "$pnp4nagios::ssi_file",
     audit   => $pnp4nagios::manage_audit,
     noop    => $pnp4nagios::bool_noops,
   }
