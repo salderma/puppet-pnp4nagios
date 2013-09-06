@@ -216,10 +216,6 @@ class pnp4nagios (
   $monitor_target      = params_lookup( 'monitor_target' , 'global' ),
   $puppi               = params_lookup( 'puppi' , 'global' ),
   $puppi_helper        = params_lookup( 'puppi_helper' , 'global' ),
-  $firewall            = params_lookup( 'firewall' , 'global' ),
-  $firewall_tool       = params_lookup( 'firewall_tool' , 'global' ),
-  $firewall_src        = params_lookup( 'firewall_src' , 'global' ),
-  $firewall_dst        = params_lookup( 'firewall_dst' , 'global' ),
   $debug               = params_lookup( 'debug' , 'global' ),
   $audit_only          = params_lookup( 'audit_only' , 'global' ),
   $noops               = params_lookup( 'noops' ),
@@ -234,13 +230,9 @@ class pnp4nagios (
   $config_file_mode    = params_lookup( 'config_file_mode' ),
   $config_file_owner   = params_lookup( 'config_file_owner' ),
   $config_file_group   = params_lookup( 'config_file_group' ),
-  $config_file_init    = params_lookup( 'config_file_init' ),
   $pid_file            = params_lookup( 'pid_file' ),
   $data_dir            = params_lookup( 'data_dir' ),
   $log_dir             = params_lookup( 'log_dir' ),
-  $log_file            = params_lookup( 'log_file' ),
-  $port                = params_lookup( 'port' ),
-  $protocol            = params_lookup( 'protocol' )
   ) inherits pnp4nagios::params {
 
   $bool_source_dir_purge=any2bool($source_dir_purge)
@@ -393,17 +385,7 @@ class pnp4nagios (
 
 
   ### Service monitoring, if enabled ( monitor => true )
-  if $pnp4nagios::bool_monitor == true {
-    if $pnp4nagios::port != '' {
-      monitor::port { "pnp4nagios_${pnp4nagios::protocol}_${pnp4nagios::port}":
-        protocol => $pnp4nagios::protocol,
-        port     => $pnp4nagios::port,
-        target   => $pnp4nagios::monitor_target,
-        tool     => $pnp4nagios::monitor_tool,
-        enable   => $pnp4nagios::manage_monitor,
-        noop     => $pnp4nagios::bool_noops,
-      }
-    }
+  ###  -- Removed Port Monitoring, npcd does not open a listen port
     if $pnp4nagios::service != '' {
       monitor::process { 'pnp4nagios_process':
         process  => $pnp4nagios::process,
@@ -420,20 +402,7 @@ class pnp4nagios (
 
 
   ### Firewall management, if enabled ( firewall => true )
-  if $pnp4nagios::bool_firewall == true and $pnp4nagios::port != '' {
-    firewall { "pnp4nagios_${pnp4nagios::protocol}_${pnp4nagios::port}":
-      source      => $pnp4nagios::firewall_src,
-      destination => $pnp4nagios::firewall_dst,
-      protocol    => $pnp4nagios::protocol,
-      port        => $pnp4nagios::port,
-      action      => 'allow',
-      direction   => 'input',
-      tool        => $pnp4nagios::firewall_tool,
-      enable      => $pnp4nagios::manage_firewall,
-      noop        => $pnp4nagios::bool_noops,
-    }
-  }
-
+  ###   -- Removed, npcd does not open a listen port
 
   ### Debugging, if enabled ( debug => true )
   if $pnp4nagios::bool_debug == true {

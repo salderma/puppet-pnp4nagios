@@ -21,7 +21,7 @@ class pnp4nagios::params {
   }
 
   $service = $::operatingsystem ? {
-    default => 'pnp4nagios',
+    default => 'npcd',
   }
 
   $service_status = $::operatingsystem ? {
@@ -29,7 +29,7 @@ class pnp4nagios::params {
   }
 
   $process = $::operatingsystem ? {
-    default => 'pnp4nagios',
+    default => 'npcd',
   }
 
   $process_args = $::operatingsystem ? {
@@ -37,7 +37,7 @@ class pnp4nagios::params {
   }
 
   $process_user = $::operatingsystem ? {
-    default => 'pnp4nagios',
+    default => 'nagios',
   }
 
   $config_dir = $::operatingsystem ? {
@@ -45,7 +45,7 @@ class pnp4nagios::params {
   }
 
   $config_file = $::operatingsystem ? {
-    default => '/etc/pnp4nagios/pnp4nagios.conf',
+    default => '/etc/pnp4nagios/npcd.conf',
   }
 
   $config_file_mode = $::operatingsystem ? {
@@ -60,13 +60,8 @@ class pnp4nagios::params {
     default => 'root',
   }
 
-  $config_file_init = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/default/pnp4nagios',
-    default                   => '/etc/sysconfig/pnp4nagios',
-  }
-
   $pid_file = $::operatingsystem ? {
-    default => '/var/run/pnp4nagios.pid',
+    default => '/var/run/npcd.pid',
   }
 
   $data_dir = $::operatingsystem ? {
@@ -76,13 +71,6 @@ class pnp4nagios::params {
   $log_dir = $::operatingsystem ? {
     default => '/var/log/pnp4nagios',
   }
-
-  $log_file = $::operatingsystem ? {
-    default => '/var/log/pnp4nagios/pnp4nagios.log',
-  }
-
-  $port = '42'
-  $protocol = 'tcp'
 
   # General Settings
   $my_class = ''
@@ -101,10 +89,6 @@ class pnp4nagios::params {
   $monitor = false
   $monitor_tool = ''
   $monitor_target = $::ipaddress
-  $firewall = false
-  $firewall_tool = ''
-  $firewall_src = '0.0.0.0/0'
-  $firewall_dst = $::ipaddress
   $puppi = false
   $puppi_helper = 'standard'
   $debug = false
